@@ -1,0 +1,3 @@
+pizzaminded_entable_homepage:
+    path:     /
+    defaults: { _controller: pizzamindedEntableBundle:Default:index }
