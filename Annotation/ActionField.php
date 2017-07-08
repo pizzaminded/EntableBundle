@@ -3,17 +3,21 @@
 namespace pizzaminded\EntableBundle\Annotation;
 
 /**
- * Class Row
+ * Class ActionField
  * @package pizzaminded\EntableBundle\Annotation
  * @Annotation
  * @Target({"CLASS"})
  */
-class Row
+class ActionField
 {
     private $propertyName;
+
     private $dataType = 'string';
 
-    private $class;
+    private $name;
+
+    private $route;
+
 
     public function __construct($options)
     {
@@ -23,6 +27,7 @@ class Row
         }
 
         foreach ($options as $key => $value) {
+
             if (!property_exists($this, $key)) {
                 throw new \InvalidArgumentException(sprintf('Property "%s" does not exist', $key));
             }
@@ -30,16 +35,6 @@ class Row
             $this->{$key} = $value;
         }
     }
-
-    /**
-     * @return string
-     */
-    public function getClass()
-    {
-        return $this->class;
-    }
-
-
 
     public function getPropertyName()
     {

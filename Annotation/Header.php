@@ -6,14 +6,14 @@ namespace pizzaminded\EntableBundle\Annotation;
  * Class Row
  * @package pizzaminded\EntableBundle\Annotation
  * @Annotation
- * @Target({"CLASS"})
+ * @Target({"PROPERTY"})
  */
-class Row
+class Header
 {
     private $propertyName;
     private $dataType = 'string';
 
-    private $class;
+    private $title;
 
     public function __construct($options)
     {
@@ -29,14 +29,6 @@ class Row
 
             $this->{$key} = $value;
         }
-    }
-
-    /**
-     * @return string
-     */
-    public function getClass()
-    {
-        return $this->class;
     }
 
 
