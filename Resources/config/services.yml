@@ -1,4 +1,4 @@
 services:
-#    pizzaminded_entable.example:
-#        class: pizzaminded\EntableBundle\Example
-#        arguments: ["@service_id", "plain_value", "%parameter%"]
+    pizzaminded_entable.example:
+        class: pizzaminded\EntableBundle\Example
+        arguments: ["@service_id", "plain_value", "%parameter%"]
