@@ -157,11 +157,13 @@ class ObjectParser
             foreach ($objectRenderPriority as $object) {
                 if ($object->isPublic()) {
                     $propertyName = $object->getPropertyName();
-                    $row[] = $item->{$propertyName};
+                    $value = $item->{$propertyName};
                 } else {
                     $methodName = $object->getGetterFunctionName();
-                    $row[] = $item->$methodName();
+                    $value = $item->$methodName();
                 }
+
+                $row[] = htmlspecialchars($value);
             }
 
             //if there is an ActionField annotation defined, parse action links
