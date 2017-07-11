@@ -4,6 +4,7 @@ namespace pizzaminded\EntableBundle\Parser;
 
 use pizzaminded\EntableBundle\Annotation\Header;
 use ReflectionProperty;
+use RuntimeException;
 
 /**
  * Class ObjectProperty
@@ -41,5 +42,21 @@ class ObjectProperty
     public function getPropertyName(): string
     {
         return $this->reflection->getName();
+    }
+
+    public function getGetterFunctionName()
+    {
+        $functionName = $this->header->getGetter();
+
+        if($functionName === null) {
+            $functionName = 'get'.ucfirst($this->getPropertyName());
+        }
+
+        if(method_exists($this->reflection->class, $functionName)) {
+            return $functionName;
+        }
+
+        throw new RuntimeException('Could not find a getter for "'.$this->getPropertyName().'" property');
+
     }
 }
