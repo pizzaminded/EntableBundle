@@ -63,6 +63,4 @@ class Header
         return $this->order;
     }
 
-
-
 }

@@ -1,6 +1,7 @@
 <?php
 
 namespace pizzaminded\EntableBundle\Annotation;
+use InvalidArgumentException;
 
 /**
  * Class ActionField
@@ -10,39 +11,46 @@ namespace pizzaminded\EntableBundle\Annotation;
  */
 class ActionField
 {
-    private $propertyName;
+
 
     private $dataType = 'string';
 
-    private $name;
+    /**
+     * @var string
+     */
+    private $title;
 
-    private $route;
 
 
-    public function __construct($options)
+
+    public function __construct(array $options)
     {
-        if (isset($options['value'])) {
-            $options['propertyName'] = $options['value'];
-            unset($options['value']);
-        }
 
         foreach ($options as $key => $value) {
 
             if (!property_exists($this, $key)) {
-                throw new \InvalidArgumentException(sprintf('Property "%s" does not exist', $key));
+                throw new InvalidArgumentException(sprintf('Property "%s" does not exist', $key));
             }
 
             $this->{$key} = $value;
         }
     }
 
-    public function getPropertyName()
-    {
-        return $this->propertyName;
-    }
 
-    public function getDataType()
+    public function getDataType(): string
     {
         return $this->dataType;
     }
+
+    /**
+     * @return string|null
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+
+
+
 }
