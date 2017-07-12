@@ -2,6 +2,7 @@
 
 namespace pizzaminded\EntableBundle\Parser;
 
+use DateTime;
 use Doctrine\Common\Annotations\AnnotationReader;
 use pizzaminded\EntableBundle\Annotation\Action;
 use pizzaminded\EntableBundle\Annotation\ActionField;
@@ -108,7 +109,7 @@ class ObjectParser
      * @throws \ReflectionException
      * @throws \InvalidArgumentException
      */
-    public function renderTable()
+    public function renderTable(): string
     {
         if ($this->getClassName() === null) {
             throw new RuntimeException('No class set.');
@@ -163,6 +164,11 @@ class ObjectParser
                     $value = $item->$methodName();
                 }
 
+                if($value instanceof DateTime) {
+                    /** @var DateTime $value */
+                    $value = $value->format('d-m-Y H:i:s');
+                }
+
                 $row[] = htmlspecialchars($value);
             }
 
@@ -171,7 +177,7 @@ class ObjectParser
                 $action = '';
                 $reflections = $this->annotationReader->getClassAnnotations($reflectionClass);
                 foreach ($reflections as $reflection) {
-                    /** @var  Action $reflection */
+                    /** @var Action $reflection */
                     if($reflection instanceof Action) {
                         $url = $this->router->generate($reflection->getRoute(), ['id' => $item->getId()]);
                         $name = $this->translator->trans($reflection->getName());
