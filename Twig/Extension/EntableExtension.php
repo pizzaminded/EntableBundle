@@ -41,7 +41,6 @@ class EntableExtension extends Twig_Extension
     private $isObjectDetected = false;
 
 
-
     public function __construct($twig, $translator, $router)
     {
 
@@ -62,14 +61,15 @@ class EntableExtension extends Twig_Extension
         ];
     }
 
-    public function entable(array  $objectCollection)
+    public function entable($objectCollection)
     {
         if (count($objectCollection) === 0) {
             return;
         }
 
         foreach ($objectCollection as $object) {
-            if(!$this->isObjectDetected) {
+
+            if (!$this->isObjectDetected) {
                 $this->objectParser->setClassName(get_class($object));
                 $this->isObjectDetected = true;
             }
