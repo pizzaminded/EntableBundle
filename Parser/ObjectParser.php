@@ -181,8 +181,14 @@ class ObjectParser
                     if($reflection instanceof Action) {
                         $url = $this->router->generate($reflection->getRoute(), ['id' => $item->getId()]);
                         $name = $this->translator->trans($reflection->getName());
+                        $targetString = null;
 
-                        $action .= '<a class="entable__action_link" href="'.$url.'">'.$name.'</a>';
+                        if($reflection->getTarget()) {
+                            $targetString = 'target="'.$reflection->getTarget().'"';
+                        }
+                        $action .= '<a class="entable__action_link" 
+                        '.$targetString.'
+                        href="'.$url.'">'.$name.'</a>';
                     }
 
                 }

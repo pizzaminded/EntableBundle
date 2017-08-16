@@ -11,22 +11,35 @@ use InvalidArgumentException;
  */
 class Action
 {
-    private $propertyName;
 
+    /**
+     * @var string
+     */
     private $dataType = 'string';
 
+    /**
+     * @var string
+     */
     private $name;
 
+    /**
+     * @var string
+     */
     private $route;
 
+    /**
+     * @var string|null
+     */
+    private $target = null;
 
+
+    /**
+     * Action constructor.
+     * @param $options
+     * @throws \InvalidArgumentException
+     */
     public function __construct($options)
     {
-        if (isset($options['value'])) {
-            $options['propertyName'] = $options['value'];
-            unset($options['value']);
-        }
-
         foreach ($options as $key => $value) {
 
             if (!property_exists($this, $key)) {
@@ -37,11 +50,10 @@ class Action
         }
     }
 
-    public function getPropertyName()
-    {
-        return $this->propertyName;
-    }
 
+    /**
+     * @return string
+     */
     public function getDataType()
     {
         return $this->dataType;
@@ -63,5 +75,12 @@ class Action
         return $this->route;
     }
 
+    /**
+     * @return null|string
+     */
+    public function getTarget()
+    {
+        return $this->target;
+    }
 
 }
