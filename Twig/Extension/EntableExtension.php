@@ -61,7 +61,7 @@ class EntableExtension extends Twig_Extension
         ];
     }
 
-    public function entable($objectCollection)
+    public function entable($objectCollection, $renderActionCells = true)
     {
         if (count($objectCollection) === 0) {
             return;
@@ -75,7 +75,7 @@ class EntableExtension extends Twig_Extension
             }
         }
         $this->objectParser->setCollection($objectCollection);
-
+        $this->objectParser->setRenderActionCells($renderActionCells);
         return $this->objectParser->renderTable();
 
 

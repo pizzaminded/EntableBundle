@@ -19,10 +19,15 @@ use Twig_Environment;
 /**
  * Class ObjectParser
  * @package pizzaminded\EntableBundle\Parser
- * @author pizzaminded <github.com/pizzaminded>
+ * @author pizzaminded <miki@appvende.net>
  */
 class ObjectParser
 {
+
+    /**
+     * @var bool
+     */
+    private $renderActionCells = true;
 
     /**
      * @var string FQCN of parsed entity
@@ -145,8 +150,8 @@ class ObjectParser
         ksort($headers);
         ksort($objectRenderPriority);
 
-        $actionField = $this->annotationReader->getClassAnnotation($reflectionClass,ActionField::class);
-        if($actionField !== null) {
+        $actionField = $this->annotationReader->getClassAnnotation($reflectionClass, ActionField::class);
+        if ($actionField !== null && $this->renderActionCells) {
             $headers[] = $actionField;
         }
 
@@ -164,7 +169,7 @@ class ObjectParser
                     $value = $item->$methodName();
                 }
 
-                if($value instanceof DateTime) {
+                if ($value instanceof DateTime) {
                     /** @var DateTime $value */
                     $value = $value->format('d-m-Y H:i:s');
                 }
@@ -172,23 +177,23 @@ class ObjectParser
                 $row[] = htmlspecialchars($value);
             }
 
-            //if there is an ActionField annotation defined, parse action links
-            if($actionField !== null) {
+            //if there is an ActionField annotation defined && should fields be parsed, parse action links
+            if ($actionField !== null && $this->renderActionCells) {
                 $action = '';
                 $reflections = $this->annotationReader->getClassAnnotations($reflectionClass);
                 foreach ($reflections as $reflection) {
                     /** @var Action $reflection */
-                    if($reflection instanceof Action) {
+                    if ($reflection instanceof Action) {
                         $url = $this->router->generate($reflection->getRoute(), ['id' => $item->getId()]);
                         $name = $this->translator->trans($reflection->getName());
                         $targetString = null;
 
-                        if($reflection->getTarget()) {
-                            $targetString = 'target="'.$reflection->getTarget().'"';
+                        if ($reflection->getTarget()) {
+                            $targetString = 'target="' . $reflection->getTarget() . '"';
                         }
                         $action .= '<a class="entable__action_link" 
-                        '.$targetString.'
-                        href="'.$url.'">'.$name.'</a>';
+                        ' . $targetString . '
+                        href="' . $url . '">' . $name . '</a>';
                     }
 
                 }
@@ -246,4 +251,23 @@ class ObjectParser
 
         return $this;
     }
+
+    /**
+     * @return bool
+     */
+    public function isRenderActionCells(): bool
+    {
+        return $this->renderActionCells;
+    }
+
+    /**
+     * @param bool $renderActionCells
+     * @return ObjectParser
+     */
+    public function setRenderActionCells(bool $renderActionCells): ObjectParser
+    {
+        $this->renderActionCells = $renderActionCells;
+        return $this;
+    }
+
 }
